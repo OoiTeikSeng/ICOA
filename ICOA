@@ -1,1 +1,110 @@
+# (A + B) * C
+.data
+prompt1:   .asciiz "Enter the first number, a: "
+prompt2:   .asciiz "Enter the second number, b: "
+prompt3:   .asciiz "Enter the third number, c: "
+result_message:  .asciiz "(a + b) * c: "
+
+.text
+.globl main
+main:
+    # Print prompts and get user inputs
+    li $v0, 4                  # Print string 
+    la $a0, prompt1            # Load string address
+    syscall                    # Print it
+
+    li $v0, 5                  # Read integer
+    syscall                    # Read it
+    move $t0, $v0              # Store a in $t0
+
+    li $v0, 4                  # Print string 
+    la $a0, prompt2            # Load string address 
+    syscall
+
+    li $v0, 5                  # Read integer syscall code
+    syscall                    # Read it
+    move $t1, $v0              # Store b in $t1
+
+    li $v0, 4                  # Print string
+    la $a0, prompt3            # Load string address
+    syscall                    # Print
+
+    li $v0, 5                  # Read integer
+    syscall                    # Read it
+    move $t2, $v0              # Store c in $t2
+
+    # Perform the arithmetic equation: (A + B) * C
+    add $t3, $t0, $t1          # t3 = t0 + t1
+    mul $t3, $t3, $t2          # t3 = t3 * t2
+
+    # Print the result
+    li $v0, 4                  # Print string 
+    la $a0, result_message     # Load address of the result message
+    syscall                    # Print it
+
+    move $a0, $t3              # Load the result into argument register
+    li $v0, 1                  # Print integer 
+    syscall                    # Print it
+
+    # Exit the program
+    li $v0, 10                 # Exit
+    syscall
+
+#(A OR B) AND C
+.data
+prompt1: .asciiz "Enter the first integer, a: "
+prompt2: .asciiz "Enter the second integer, b: "
+prompt3: .asciiz "Enter the third integer, c: "
+result:  .asciiz "(A OR B) AND C: "
+
+.text
+.globl main
+
+main:
+    # Display prompt for the first integer
+    li $v0, 4
+    la $a0, prompt1
+    syscall
+    
+    # Read the first integer from the user
+    li $v0, 5
+    syscall
+    move $t0, $v0
+    
+    # Display prompt for the second integer
+    li $v0, 4
+    la $a0, prompt2
+    syscall
+    
+    # Read the second integer from the user
+    li $v0, 5
+    syscall
+    move $t1, $v0
+
+    # Display prompt for the third integer
+    li $v0, 4
+    la $a0, prompt3
+    syscall
+    
+    # Read the third integer from the user
+    li $v0, 5
+    syscall
+    move $t2, $v0
+    
+    # Perform OR operation and AND operation
+    or $t3, $t0, $t1    # $t2 = $t0 or $t1
+    and $t3, $t2, $t3   # $t4 = $t2 AND $t3
+    
+    # Display the result label
+    li $v0, 4
+    la $a0, result
+    syscall
+
+    move $a0, $t3
+    li $v0, 1
+    syscall
+    
+    # Exit
+    li $v0, 10
+    syscall
 
