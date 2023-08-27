@@ -1,69 +1,74 @@
 .data
-aValue:         .word 0
-bValue:         .word 0
-cValue:         .word 0
-result:         .double 0.0
-outputMsg:      .asciiz "The equation for this selection is (A + B) * C\n\n"
-inputAMsg:      .asciiz "Enter a value for A: "
-inputBMsg:      .asciiz "Enter a value for B: "
-inputCMsg:      .asciiz "Enter a value for C: "
-outputTotalMsg: .asciiz "The total of the values are "
+aValue : .float 0.0
+bValue : .float 0.0
+cValue : .float 0.0
+result : .float 0.0
+newLine : .asciiz "\n"
+promptA : .asciiz "Enter a value for A: "
+promptB : .asciiz "Enter a value for B: "
+promptC : .asciiz "Enter a value for C: "
+resultMsg : .asciiz "The total of the values are "
 
 .text
 .globl main
 
-main:
-    # Print the introduction message
-    li $v0, 4          
-    la $a0, outputMsg 
-    syscall
+main :
+# Print prompt for A
+li   $v0, 4        
+la   $a0, promptA 
+syscall
 
-    # Input A value
-    li $v0, 4          
-    la $a0, inputAMsg  
-    syscall
-    li $v0, 5          
-    syscall
-    sw $v0, aValue     
+# Read aValue
+li   $v0, 6        
+syscall
+swc1 $f0, aValue   
 
-    # Input B value
-    li $v0, 4          
-    la $a0, inputBMsg  
-    syscall
-    li $v0, 5          
-    syscall
-    sw $v0, bValue     
+# Print prompt for B
+li   $v0, 4        
+la   $a0, promptB 
+syscall
 
-    # Input C value
-    li $v0, 4          
-    la $a0, inputCMsg  
-    syscall
-    li $v0, 5          
-    syscall
-    sw $v0, cValue     
+# Read bValue
+li   $v0, 6        
+syscall
+swc1 $f0, bValue   
 
-    # Calculate the result
-    lw $t0, aValue     
-    lw $t1, bValue     
-    add $t2, $t0, $t1  
-    lw $t3, cValue     
-    cvt.d.w $f0, $t2   
-    cvt.d.w $f1, $t3   
-    div.d $f2, $f0, $f1 
-    s.d $f2, result    
+# Print prompt for C
+li   $v0, 4        
+la   $a0, promptC 
+syscall
 
-    # Print the result message
-    li $v0, 4              
-    la $a0, outputTotalMsg 
-    syscall
-    l.d $f12, result       
-    
-    # Print the double result
-    li $v0, 3              
-    syscall
+# Read cValue
+li   $v0, 6       
+syscall
+swc1 $f0, cValue   
 
-    # Exit the program
-    li $v0, 10             
-    syscall
+# Calculate result : (aValue + bValue) / cValue
+lwc1 $f4, aValue   
+lwc1 $f6, bValue   
+lwc1 $f8, cValue   
+add.s $f10, $f4, $f6   
+div.s $f10, $f10, $f8  
+swc1 $f10, result   
+
+# Print result message
+li   $v0, 4            
+la   $a0, resultMsg   
+syscall
+
+# Print result value
+lwc1 $f12, result     
+li   $v0, 2            
+syscall
+
+# Print newline
+li   $v0, 4            
+la   $a0, newLine     
+syscall
+
+# Exit
+li   $v0, 10           
+syscall
+
 
 
