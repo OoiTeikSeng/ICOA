@@ -1,5 +1,5 @@
 .data
-prompt:     .asciiz "Choose an option:\n 1. Blank\n 2. (A AND B) NOR C\n 3. (A OR B) AND C\n 4. Blank\n 5. (A * B) / C\n 6. (A + B) * C\n 7. Exit\n"
+prompt:     .asciiz "Choose an option:\n 1. (A OR B) NOR C\n 2. (A AND B) NOR C\n 3. (A OR B) AND C\n 4. (A * B) / C\n 5. (A * B) / C\n 6. (A + B) * C\n 7. Exit\n"
 selection	: .asciiz "Choose an operation: "
 aArithValue : .float 0.0
 bArithValue : .float 0.0
@@ -14,10 +14,14 @@ warning : .asciiz "Only enter in integers!! "
 valueOfA : .asciiz "Enter a value for A: "
 valueOfB : .asciiz "Enter a value for B: "
 valueOfC : .asciiz "Enter a value for C: "
-resultTotal : .asciiz "The total of the values are (A + B) / C = "
+resultTotal         : .asciiz "The total of the values are (A + B) / C = "
 arithmeticOperation	: .asciiz "You have chose then operation of (A + B) / C "
-resultLogicMsg : .asciiz "The result of (A AND B) NOR C is "
+rTotal              : .asciiz "The total of the values are (A * B) / C = "
+aOperation	        : .asciiz "You have chose then operation of (A * B) / C "
+resultLogicMsg      : .asciiz "The result of (A AND B) NOR C is "
 logicalOperation	: .asciiz "You have chose then operation of (A AND B) NOR C"
+result              : .asciiz "The result of (A OR B) NOR C is "
+logiOperation   	: .asciiz "You have chose then operation of (A OR B) NOR C"
 
 .text
 .globl main
@@ -53,8 +57,74 @@ menu_loop:
     j menu_loop     # Invalid choice, repeat menu loop
 
 option_1:
+    # Print operation type
+    la $a0, logiOperation
+    li $v0, 4
+    syscall
 
-j menu_loop
+    # Go to next line
+	li   $v0, 4
+	la   $a0, newLine
+	syscall
+
+    # Print warning
+    la $a0, warning
+    li $v0, 4
+    syscall
+
+    # Go to next line
+	li   $v0, 4
+	la   $a0, newLine
+	syscall
+
+    # Get A value
+    la $a0, valueOfA  
+    li $v0, 4
+    syscall
+    li $v0, 5
+    syscall
+    move $t2, $v0
+
+    # Get B value
+    la $a0, valueOfB
+    li $v0, 4
+    syscall
+    li $v0, 5
+    syscall
+    move $t3, $v0
+
+    # Get C value
+    la $a0, valueOfC
+    li $v0, 4
+    syscall
+    li $v0, 5
+    syscall
+    move $t4, $v0
+
+    # Perform (A OR B) NOR C
+    or $t5, $t2, $t3   # A OR B
+    nor $t5, $t5, $t4   # (A OR B) NOR C
+
+    # Print result
+    la $a0, result
+    li $v0, 4
+    syscall
+
+    move $a0, $t5
+    li $v0, 1
+    syscall
+
+    # Go to next line
+    li   $v0, 4
+    la   $a0, newLine
+    syscall
+
+    # Print newline
+    la $a0, newLine
+    li $v0, 4
+    syscall
+
+    j menu_loop
 
 option_2:
 	# Print type of operation 
@@ -146,8 +216,97 @@ option_3:
     j menu_loop
 
 option_4:
+    # Print operation type
+    li $v0, 4
+    la $a0, aOperation
+    syscall
+
+    # Go to next line
+	li   $v0, 4
+	la   $a0, newLine
+	syscall
+
+    # Print warning
+    li $v0, 4
+    la $a0, warning
+    syscall
+
+    # Go to next line
+	li   $v0, 4
+	la   $a0, newLine
+	syscall
+
+    # Get A value
+    li $v0, 4
+    la $a0, valueOfA
+    syscall
+    li $v0, 6
+    syscall
+    mov.s $f5, $f0
+
+    # Get B value
+    li $v0, 4
+    la $a0, valueOfB
+    syscall
+    li $v0, 6
+    syscall
+    mov.s $f6, $f0
+
+    # Get C value
+    li $v0, 4
+    la $a0, valueOfC
+    syscall
+    li $v0, 6
+    syscall
+    mov.s $f7, $f0
+
+    # Check if C is zero
+    li.s   $f10, 0.0      
+    c.eq.s $f7, $f10        
+    bc1t   div_by_zero        
+
+    # Perform (A * B) / C
+    mul.s $f8, $f5, $f6
+    div.s $f9, $f8, $f7
+
+    # Print result
+    li $v0, 4
+    la $a0, resultTotal
+    syscall
+
+    li $v0, 2
+    mov.s $f12, $f9
+    syscall
+
+    # Go to next line
+	li   $v0, 4
+	la   $a0, newLine
+	syscall
+
+    # Go to next line
+	li   $v0, 4
+	la   $a0, newLine
+	syscall
 
     j menu_loop
+
+    div_by_zero:
+    li $v0, 4
+    la $a0, warning
+    syscall
+
+    # Go to next line
+    li   $v0, 4
+    la   $a0, newLine
+    syscall
+    
+    # Go to next line
+    li   $v0, 4
+    la   $a0, newLine
+    syscall
+
+    j menu_loop
+
 
 option_5:
     # Print type of operation 
