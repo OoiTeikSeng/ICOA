@@ -1,5 +1,5 @@
 .data
-prompt:     .asciiz "Choose an option:\n 1. Blank\n 2. (A AND B) OR C\n 3. (A OR B) AND C\n 4. Blank\n 5. (A * B) / C\n 6. (A + B) * C\n 7. Exit\n"
+prompt:     .asciiz "Choose an option:\n 1. Blank\n 2. (A AND B) NOR C\n 3. (A OR B) AND C\n 4. Blank\n 5. (A * B) / C\n 6. (A + B) * C\n 7. Exit\n"
 selection	: .asciiz "Choose an operation: "
 aArithValue : .float 0.0
 bArithValue : .float 0.0
@@ -16,8 +16,8 @@ valueOfB : .asciiz "Enter a value for B: "
 valueOfC : .asciiz "Enter a value for C: "
 resultTotal : .asciiz "The total of the values are (A + B) / C = "
 arithmeticOperation	: .asciiz "You have chose then operation of (A + B) / C "
-resultLogicMsg : .asciiz "The result of (A AND B) OR C is "
-logicalOperation	: .asciiz "You have chose then operation of (A AND B) OR C"
+resultLogicMsg : .asciiz "The result of (A AND B) NOR C is "
+logicalOperation	: .asciiz "You have chose then operation of (A AND B) NOR C"
 
 .text
 .globl main
@@ -116,7 +116,7 @@ option_2:
     and  $t3, $t0, $t1
 
     # Perform (A AND B) OR C
-    or   $t4, $t3, $t2
+    nor   $t4, $t3, $t2
     sw   $t4, resultLogic
 
     # Print result message
