@@ -319,7 +319,7 @@ option_4:
     syscall
     li $v0, 6
     syscall
-    mov.s $f5, $f0
+    mov $f5, $f0
 
     # Get B value
     li $v0, 4
@@ -327,7 +327,7 @@ option_4:
     syscall
     li $v0, 6
     syscall
-    mov.s $f6, $f0
+    mov $f6, $f0
 
     # Get C value
     li $v0, 4
@@ -335,16 +335,16 @@ option_4:
     syscall
     li $v0, 6
     syscall
-    mov.s $f7, $f0
+    mov $f7, $f0
 
     # Check if C is zero
-    li.s   $f10, 0.0      
+    li   $f10, 0.0      
     c.eq.s $f7, $f10        
     bc1t   div_by_zero        
 
     # Perform (A * B) / C
-    mul.s $f8, $f5, $f6
-    div.s $f9, $f8, $f7
+    mul $f8, $f5, $f6
+    div $f9, $f8, $f7
 
     # Print result
     li $v0, 4
@@ -352,7 +352,7 @@ option_4:
     syscall
 
     li $v0, 2
-    mov.s $f12, $f9
+    mov $f12, $f9
     syscall
 
     # Go to next line
