@@ -1,6 +1,7 @@
 .data
-prompt:     .asciiz "Choose an option:\n 1. (A OR B) NOR C\n 2. (A AND B) NOR C\n 3. (A OR B) AND C\n 4. (A * B) / C\n 5. (A + B) / C\n 6. (A + B) * C\n 7. Exit\n"
-selection	: .asciiz "Choose an operation: "
+prompt:     .asciiz "Choose an option:\n 1. (A OR B) NOR C\n 2. (A AND B) OR C\n 3. (A OR B) AND C\n 4. (A * B) / C\n 5. (A + B) / C\n 6. (A + B) * C\n 7. Exit\n"
+selection	: .asciiz "Choose an operation (1-7): "
+invalidMsg  : .asciiz "Invalid input! Please enter again. \n\n"
 aArithValue : .float 0.0
 bArithValue : .float 0.0
 cArithValue : .float 0.0
@@ -11,7 +12,7 @@ cLogicValue : .word 0
 resultLogic : .word 0
 exitMsg     : .asciiz "You have successfully exit.\n"
 newLine		: .asciiz "\n"
-warning : .asciiz "Only enter in integers!! "
+warning : .asciiz "Please enter in integers!!\n "
 valueOfA : .asciiz "Enter a value for A: "
 valueOfB : .asciiz "Enter a value for B: "
 valueOfC : .asciiz "Enter a value for C: "
@@ -58,8 +59,7 @@ menu_loop:
     beq $t1, 5, option_5
 	beq $t1, 6, option_6
     beq $t1, 7, exit
-    
-    j menu_loop     # Invalid choice, repeat menu loop
+    j invalidChoice         # Invalid choice, repeat menu loop
 
 option_1:
     # Print operation type
@@ -531,6 +531,13 @@ option_6:
 	li   $v0, 4            
 	la   $a0, newLine     
 	syscall
+
+    j menu_loop
+
+invalidChoice:
+    li $v0, 4                   
+    la $a0, invalidMsg
+    syscall
 
     j menu_loop
 
