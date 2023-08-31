@@ -62,61 +62,19 @@ menu_loop:
     j invalidChoice         # Invalid choice, repeat menu loop
 
 option_1:
-    # Print operation type
-    la $a0, logicalOperation1
-    li $v0, 4
-    syscall
-
-    # Go to next line
-	li   $v0, 4
-	la   $a0, newLine
+	# Print type of operation 
+	li $v0, 4
+	la $a0, logicalOperation1
 	syscall
 
-    # Print warning
+    # Go to next line
+    li   $v0, 4
+    la   $a0, newLine
+    syscall
+
+    # Print warning message 
+    li $v0, 4
     la $a0, warning
-    li $v0, 4
-    syscall
-
-    # Go to next line
-	li   $v0, 4
-	la   $a0, newLine
-	syscall
-
-    # Get A value
-    la $a0, valueOfA  
-    li $v0, 4
-    syscall
-    li $v0, 5
-    syscall
-    move $t2, $v0
-
-    # Get B value
-    la $a0, valueOfB
-    li $v0, 4
-    syscall
-    li $v0, 5
-    syscall
-    move $t3, $v0
-
-    # Get C value
-    la $a0, valueOfC
-    li $v0, 4
-    syscall
-    li $v0, 5
-    syscall
-    move $t4, $v0
-
-    # Perform (A OR B) NOR C
-    or $t5, $t2, $t3   # A OR B
-    nor $t5, $t5, $t4   # (A OR B) NOR C
-
-    # Print result
-    la $a0, resultLogicMsg1
-    li $v0, 4
-    syscall
-
-    move $a0, $t5
-    li $v0, 1
     syscall
 
     # Go to next line
@@ -124,12 +82,70 @@ option_1:
     la   $a0, newLine
     syscall
 
-    # Print newline
-    la $a0, newLine
-    li $v0, 4
+    # Print prompt for A
+    li   $v0, 4
+    la   $a0, valueOfA
     syscall
 
-j menu_loop
+    # Read value A
+    li   $v0, 5
+    syscall
+    sw   $v0, aLogicValue
+
+    # Print prompt for B
+    li   $v0, 4
+    la   $a0, valueOfB
+    syscall
+
+    # Read value B
+    li   $v0, 5
+    syscall
+    sw   $v0, bLogicValue
+
+    # Print prompt for C
+    li   $v0, 4
+    la   $a0, valueOfC
+    syscall
+
+    # Read value C
+    li   $v0, 5
+    syscall
+    sw   $v0, cLogicValue
+
+    # Load values for the logical operation
+    lw   $t0, aLogicValue
+    lw   $t1, bLogicValue
+    lw   $t2, cLogicValue
+
+    # Perform (A OR B)
+    or   $t3, $t0, $t1
+
+    # Perform (A OR B) NOR C
+    nor  $t4, $t3, $t2
+    sw   $t4, resultLogic
+
+    # Print result message
+    li   $v0, 4
+    la   $a0, resultLogicMsg1
+    syscall
+
+    # Print result value
+    lw   $a0, resultLogic
+    li   $v0, 1
+    syscall
+
+    # Go to next line
+    li   $v0, 4
+    la   $a0, newLine
+    syscall
+
+    # Go to next line
+    li   $v0, 4
+    la   $a0, newLine
+    syscall
+
+    j menu_loop
+
 
 option_2:
 	# Print type of operation 
