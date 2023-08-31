@@ -1,5 +1,5 @@
 .data
-prompt:     .asciiz "Choose an option:\n 1. (A OR B) NOR C\n 2. (A AND B) OR C\n 3. (A OR B) AND C\n 4. (A * B) / C\n 5. (A + B) / C\n 6. (A + B) * C\n 7. Exit\n"
+prompt:     .asciiz "Choose an option:\n 1. (A OR B) NOR C\n 2. (A AND B) NOR C\n 3. (A OR B) AND C\n 4. (A * B) / C\n 5. (A + B) / C\n 6. (A + B) * C\n 7. Exit\n"
 selection	: .asciiz "Choose an operation: "
 aArithValue : .float 0.0
 bArithValue : .float 0.0
