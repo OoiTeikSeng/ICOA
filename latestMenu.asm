@@ -1,5 +1,5 @@
 .data
-prompt:     .asciiz "Choose an option:\n 1. (A OR B) NOR C\n 2. (A AND B) OR C\n 3. (A OR B) AND C\n 4. (A * B) / C\n 5. (A + B) / C\n 6. (A + B) * C\n 7. Exit\n"
+prompt:     .asciiz "Choose an option:\n 1. (A OR B) NOR C\n 2. (A AND B) NOR C\n 3. (A OR B) AND C\n 4. (A * B) / C\n 5. (A + B) / C\n 6. (A + B) * C\n 7. Exit\n"
 selection	: .asciiz "Choose an operation (1-7): "
 invalidMsg  : .asciiz "Invalid input! Please enter again. \n\n"
 aArithValue : .float 0.0
@@ -23,7 +23,7 @@ resultTotal3 : .asciiz "The result of (A + B) * C = "
 arithmeticOperation1	: .asciiz "You have chose the operation of (A * B) / C "
 arithmeticOperation2	: .asciiz "You have chose the operation of (A + B) / C "
 arithmeticOperation3	: .asciiz "You have chose the operation of (A + B) * C "
-resultLogicMsg1 : .asciiz "The result of (A AND B) NOR C is "
+resultLogicMsg1 : .asciiz "The result of (A OR B) NOR C is "
 resultLogicMsg2 : .asciiz "The result of (A AND B) NOR C is "
 resultLogicMsg3 : .asciiz "The result of (A OR B) AND C is "
 logicalOperation1	: .asciiz "You have chose the operation of (A OR B) NOR C"
